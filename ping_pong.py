@@ -10,13 +10,18 @@ class PING:
     def newgame(self):
         self.x = 1.5
         self.y = 1.5
-        self.game_over = False
+        self.job = None
   
         self.rectangle_bar1 = self.canvas.create_rectangle(0, 0, 100, 5, fill = "black") 
         self.rectangle_bar2 = self.canvas.create_rectangle(275, 263, 375, 267, fill = "black") 
         self.rectangle = self.canvas.create_rectangle(15, 15, 35, 35, fill = "orange") 
         self.canvas.pack() 
         self.movement()
+
+    def game_over(self):
+        if self.job is not None:
+            self.canvas.after_cancel(self.job)
+            self.job = None
       
     def movement(self): 
         a,b,c,d = self.canvas.coords(self.rectangle)
@@ -25,8 +30,7 @@ class PING:
         self.x += self.x * 0.001
         self.y += self.x * 0.001
 
-        if not self.game_over:
-            self.canvas.after(25 , self.movement) 
+        self.job = self.canvas.after(25 , self.movement) 
 
     def bar1left(self, event): 
         a1,b1,c1,d1 = self.canvas.coords(self.rectangle_bar1)
@@ -72,9 +76,10 @@ class PING:
     def endgame(self, winner=None):
         self.x = 0
         self.y = 0
-        canvas_txt = self.canvas.create_text(180, 100)
-        self.canvas.itemconfig(canvas_txt, text="Game Over!\nPlayer %s Wins!\n\nPress 'Space' to retry" % winner)
-        self.game_over = True
+        if winner:
+            canvas_txt = self.canvas.create_text(180, 100)
+            self.canvas.itemconfig(canvas_txt, text="Game Over!\nPlayer %s Wins!\n\nPress 'Space' to retry" % winner)
+        self.game_over()
 
 if __name__ == "__main__": 
   
