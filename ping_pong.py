@@ -93,6 +93,5 @@ if __name__ == "__main__":
     master.bind("<KeyPress-d>", lambda e: pong.bar1right(e)) 
     master.bind("<KeyPress-D>", lambda e: pong.bar1right(e)) 
     master.bind("<KeyPress-space>", lambda e: pong.space(e)) 
-      
-    # Infnite loop breaks only by interrupt 
+       
     mainloop()
